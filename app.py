@@ -33,77 +33,133 @@ st.set_page_config(
 # ── Custom CSS ────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
-/* ── Apple Inspired Minimalist Light Theme ── */
+/* ── Apple-Inspired Premium Light Theme (Forced) ── */
 
-html, body, [class*="css"] {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f5f5f7;
-    color: #1d1d1f;
-    -webkit-font-smoothing: antialiased;
+/* 
+   We force light theme colors even if Streamlit is set to dark mode
+   by targeting the root and specific Streamlit classes.
+*/
+
+:root {
+    --st-bg: #fbfbfd;
+    --st-fg: #1d1d1f;
+    --st-accent: #007aff;
+    --st-glass: rgba(255, 255, 255, 0.7);
+    --st-border: rgba(0, 0, 0, 0.08);
+    --st-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
 }
 
-#MainMenu, footer, header { visibility: hidden; }
-.stDeployButton { display: none; }
+/* Global Background Override */
+[data-testid="stAppViewContainer"], 
+[data-testid="stHeader"], 
+.main,
+body {
+    background-color: var(--st-bg) !important;
+    color: var(--st-fg) !important;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
 
+/* Hide Streamlit elements */
+#MainMenu, footer, header { visibility: hidden !important; }
+.stDeployButton { display: none !important; }
+[data-testid="stDecoration"] { display: none !important; }
+
+/* Block Container Padding */
 .main .block-container {
     padding: 0 !important;
     max-width: 100% !important;
 }
 
-/* ── Sidebar ── */
+/* ── Sidebar Glassmorphism ── */
 [data-testid="stSidebar"] {
-    background: rgba(255, 255, 255, 0.7) !important;
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    border-right: 1px solid rgba(0, 0, 0, 0.05);
-    width: 280px !important;
+    background: var(--st-glass) !important;
+    backdrop-filter: blur(40px) !important;
+    -webkit-backdrop-filter: blur(40px) !important;
+    border-right: 1px solid var(--st-border) !important;
+    width: 300px !important;
+}
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+    padding-top: 2rem !important;
 }
 
-/* ── Landing Page ── */
+/* ── Landing Page (Hero) ── */
 .hero-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 90vh;
-    background: radial-gradient(circle at center, #ffffff 0%, #f5f5f7 100%);
+    height: 100vh;
+    background: radial-gradient(circle at center, #ffffff 0%, #fbfbfd 100%);
     text-align: center;
     padding: 2rem;
+    z-index: 1;
 }
 .hero-badge {
-    background: rgba(0, 122, 255, 0.08);
-    color: #007aff;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 0.85rem;
+    background: rgba(0, 122, 255, 0.1);
+    color: var(--st-accent);
+    padding: 8px 20px;
+    border-radius: 40px;
+    font-size: 0.9rem;
     font-weight: 600;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     letter-spacing: 0.02em;
+    border: 1px solid rgba(0, 122, 255, 0.05);
 }
 .hero-title {
-    font-size: 5rem;
+    font-size: clamp(3rem, 10vw, 6rem);
     font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 1.1;
-    margin-bottom: 1.5rem;
-    background: linear-gradient(180deg, #1d1d1f 0%, #434343 100%);
+    letter-spacing: -0.05em;
+    line-height: 1.05;
+    margin-bottom: 2rem;
+    color: #1d1d1f;
+    background: linear-gradient(180deg, #1d1d1f 60%, #86868b 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 .hero-subtitle {
-    font-size: 1.5rem;
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
     color: #86868b;
-    max-width: 600px;
-    margin-bottom: 3rem;
-    line-height: 1.4;
+    max-width: 700px;
+    margin-bottom: 3.5rem;
+    line-height: 1.5;
+    font-weight: 400;
 }
 
-/* ── Dashboard UI ── */
+/* ── Buttons ── */
+.premium-btn-container {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+}
+.stButton > button {
+    border-radius: 14px !important;
+    border: 1px solid var(--st-border) !important;
+    background: #ffffff !important;
+    color: var(--st-fg) !important;
+    font-weight: 600 !important;
+    padding: 0.6rem 1.2rem !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02) !important;
+}
+.stButton > button:hover {
+    border-color: var(--st-accent) !important;
+    color: var(--st-accent) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05) !important;
+}
+/* Primary Button Override */
+div[data-testid="stButton"] button[kind="primary"] {
+    background: #000 !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+/* ── Chat Header ── */
 .chat-header {
-    padding: 1.2rem 2rem;
-    background: rgba(255, 255, 255, 0.7);
+    padding: 1.5rem 2.5rem;
+    background: rgba(251, 251, 253, 0.8);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid var(--st-border);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -112,56 +168,77 @@ html, body, [class*="css"] {
     justify-content: space-between;
 }
 .chat-viewport {
-    padding: 2rem 15% 10rem 15%;
+    padding: 3rem 18% 12rem 18%;
+    background: transparent;
+}
+
+/* ── Message Bubbles ── */
+/* User */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+    background: #000 !important;
+    color: #fff !important;
+    border-radius: 20px 20px 4px 20px !important;
+    margin-left: 15% !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+/* Assistant */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+    background: #fff !important;
+    color: #1d1d1f !important;
+    border: 1px solid var(--st-border) !important;
+    border-radius: 20px 20px 20px 4px !important;
+    margin-right: 15% !important;
+    box-shadow: var(--st-shadow) !important;
+}
+
+/* ── Input Bar ── */
+[data-testid="stChatInput"] {
+    border-radius: 30px !important;
+    border: 1px solid var(--st-border) !important;
+    background: #fff !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.04) !important;
+    padding: 6px !important;
+}
+
+/* ── Containers/Cards ── */
+.output-card {
+    background: #ffffff;
+    border: 1px solid var(--st-border);
+    border-radius: 24px;
+    padding: 2rem;
+    margin-top: 1.5rem;
+    box-shadow: var(--st-shadow);
+    line-height: 1.7;
+}
+
+/* Tool Header */
+.tool-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
 }
 
 /* ── Animations ── */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.98) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }
-.animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-}
-
-/* ── Buttons ── */
-.premium-btn {
-    background: #000000;
-    color: #ffffff !important;
-    padding: 12px 32px;
-    border-radius: 30px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-}
-.premium-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+.animate-premium {
+    animation: fadeInScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* ── Tool Headers ── */
-.tool-header-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 2.5rem;
-    margin-bottom: 2rem;
-    border: 1px solid rgba(0,0,0,0.05);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-}
-
-/* ── Tool output ── */
-.output-card {
-    background: rgba(0, 122, 255, 0.03);
-    border: 1px solid rgba(0, 122, 255, 0.1);
-    border-radius: 18px;
-    padding: 1.5rem;
-    color: #1d1d1f;
-    line-height: 1.6;
-    margin-top: 1.5rem;
+/* Forms */
+[data-testid="stTextArea"] textarea, 
+[data-testid="stTextInput"] input {
+    background: #ffffff !important;
+    border: 1px solid var(--st-border) !important;
+    border-radius: 16px !important;
+    padding: 1rem !important;
 }
 
 </style>
+""", unsafe_allow_html=True)
 """, unsafe_allow_html=True)
 
 # ── Session State ─────────────────────────────────────────────────────────────
