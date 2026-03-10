@@ -3,3 +3,6 @@ openai>=1.14.0
 anthropic>=0.20.0
 google-generativeai>=0.4.0
 python-dotenv>=1.0.0
+fastapi
+uvicorn
+python-multipart

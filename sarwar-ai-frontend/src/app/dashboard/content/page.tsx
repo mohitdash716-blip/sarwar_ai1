@@ -10,13 +10,28 @@ export default function ContentPage() {
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!topic.trim()) return;
     setLoading(true);
-    setTimeout(() => {
-      setOutput("# The Future of Minimalism in AI\n\nArtificial Intelligence is not just about complex algorithms; it's about making complex tasks feel simple. In this " + type + ", we explore how Sarwar AI is leading the charge in premium, minimalist workspace design...\n\n### Key Takeaways\n1. Clarity is king.\n2. Whitespace is a feature, not a void.\n3. Motion should be meaningful.");
+    try {
+      const response = await fetch("http://localhost:8000/content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: topic,
+          type: type,
+          model: "GPT-4o"
+        })
+      });
+      if (!response.ok) throw new Error("Content generation failed");
+      const data = await response.json();
+      setOutput(data.response);
+    } catch (error) {
+      console.error("Content Error:", error);
+      setOutput("⚠️ An error occurred while creating your content.");
+    } finally {
       setLoading(false);
-    }, 2000);
+    }
   };
 
   return (

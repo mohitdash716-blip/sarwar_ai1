@@ -30,7 +30,7 @@ export default function ChatPage() {
     }
   }, [messages, isTyping]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
 
     const userMsg: Message = { id: Date.now().toString(), role: "user", content: input };
@@ -38,16 +38,37 @@ export default function ChatPage() {
     setInput("");
     setIsTyping(true);
 
-    // Simulated AI Response
-    setTimeout(() => {
+    try {
+      const response = await fetch("http://localhost:8000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: userMsg.content,
+          model: selectedModel,
+          history: messages.map(m => ({ role: m.role, content: m.content }))
+        })
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch response");
+
+      const data = await response.json();
       const aiMsg: Message = { 
         id: (Date.now() + 1).toString(), 
         role: "assistant", 
-        content: "I've received your request about: \n\n\"" + userMsg.content + "\"\n\nHow would you like me to proceed with this?" 
+        content: data.response 
       };
       setMessages(prev => [...prev, aiMsg]);
+    } catch (error) {
+      console.error("Chat Error:", error);
+      const errorMsg: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "⚠️ Sorry, I encountered an error connecting to the AI engine. Please make sure the backend server is running."
+      };
+      setMessages(prev => [...prev, errorMsg]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (

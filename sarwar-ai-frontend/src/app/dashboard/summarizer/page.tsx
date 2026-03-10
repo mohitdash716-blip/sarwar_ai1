@@ -9,13 +9,27 @@ export default function SummarizerPage() {
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSummarize = () => {
+  const handleSummarize = async () => {
     if (!input.trim()) return;
     setLoading(true);
-    setTimeout(() => {
-      setOutput("This is a premium, AI-generated summary of your text. It highlights the most important points with extreme clarity and minimalist precision, following the Sarwar AI philosophy.");
+    try {
+      const response = await fetch("http://localhost:8000/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: input,
+          model: "GPT-4o" // Default or could add a selector
+        })
+      });
+      if (!response.ok) throw new Error("Summarization failed");
+      const data = await response.json();
+      setOutput(data.response);
+    } catch (error) {
+      console.error("Summarize Error:", error);
+      setOutput("⚠️ An error occurred while generating the summary.");
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (

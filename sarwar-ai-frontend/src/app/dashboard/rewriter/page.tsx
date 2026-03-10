@@ -10,13 +10,28 @@ export default function RewriterPage() {
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleRewrite = () => {
+  const handleRewrite = async () => {
     if (!text.trim()) return;
     setLoading(true);
-    setTimeout(() => {
-      setOutput("Refined text in " + style + " style: The original manuscript has been meticulously revised to reflect a more sophisticated and scholarly tone, ensuring that the core arguments are presented with maximal clarity and academic rigour.");
+    try {
+      const response = await fetch("http://localhost:8000/rewrite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: text,
+          style: style,
+          model: "GPT-4o"
+        })
+      });
+      if (!response.ok) throw new Error("Rewrite failed");
+      const data = await response.json();
+      setOutput(data.response);
+    } catch (error) {
+      console.error("Rewrite Error:", error);
+      setOutput("⚠️ An error occurred while rewriting your content.");
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (
