@@ -18,7 +18,7 @@ export default function Home() {
     visible: { 
       y: 0, 
       opacity: 1,
-      transition: { duration: 0.5, ease: "easeOut" }
+      transition: { duration: 0.6, ease: "circOut" }
     }
   };
 
@@ -30,7 +30,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#fbfbfd] text-[#1d1d1f] flex flex-col items-center selection:bg-primary/20">
+    <div className="min-h-screen bg-[#fbfbfd] text-[#1d1d1f] flex flex-col items-center selection:bg-primary/20 mesh-gradient">
       {/* Navbar Overlay */}
       <nav className="fixed top-0 w-full z-50 glass px-6 py-4 flex items-center justify-between max-w-7xl mx-auto backdrop-blur-md">
         <div className="flex items-center gap-2 group cursor-pointer">

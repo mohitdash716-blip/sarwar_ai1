@@ -35,7 +35,7 @@ export default function ContentPage() {
   };
 
   return (
-    <div className="flex-1 p-6 md:p-12 overflow-y-auto bg-white">
+    <div className="flex-1 p-6 md:p-12 overflow-y-auto bg-[#fbfbfd] mesh-gradient">
       <div className="max-w-4xl mx-auto space-y-12">
         <header>
           <div className="flex items-center gap-3 mb-4">
