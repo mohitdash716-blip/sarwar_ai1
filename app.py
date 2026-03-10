@@ -193,7 +193,7 @@ if st.session_state.active_view == "landing":
     
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
-        if st.button("Enter Sarwar AI ✦", key="enter_btn", use_container_width=True, kind="primary"):
+        if st.button("Enter Sarwar AI ✦", key="enter_btn", use_container_width=True, type="primary"):
             start_app()
             st.rerun()
 
@@ -259,7 +259,7 @@ else:
     elif st.session_state.active_view == "summarizer":
         st.markdown('<div class="tool-view"><h1>Text Summarizer</h1>', unsafe_allow_html=True)
         text = st.text_area("Input Text", placeholder="Paste your content here...", height=250)
-        if st.button("Generate Summary", kind="primary"):
+        if st.button("Generate Summary", type="primary"):
             if text:
                 with st.spinner("Analyzing..."):
                     res = run_summarizer(text, selected_model)
@@ -270,7 +270,7 @@ else:
         st.markdown('<div class="tool-view"><h1>Email Generator</h1>', unsafe_allow_html=True)
         context = st.text_area("What is this email about?", height=150)
         tone = st.selectbox("Tone", ["Professional", "Friendly", "Urgent", "Formal"])
-        if st.button("Draft Email", kind="primary"):
+        if st.button("Draft Email", type="primary"):
             if context:
                 with st.spinner("Drafting..."):
                     res = run_email_generator(context, tone.lower(), selected_model)
@@ -281,7 +281,7 @@ else:
         st.markdown('<div class="tool-view"><h1>Content Rewriter</h1>', unsafe_allow_html=True)
         text = st.text_area("Original Text", height=200)
         style = st.selectbox("Target Style", ["Formal", "Casual", "Simpler", "Creative"])
-        if st.button("Rewrite Now", kind="primary"):
+        if st.button("Rewrite Now", type="primary"):
             if text:
                 with st.spinner("Rewriting..."):
                     res = run_rewriter(text, style.lower(), selected_model)
@@ -292,7 +292,7 @@ else:
         st.markdown('<div class="tool-view"><h1>Creative Content Generator</h1>', unsafe_allow_html=True)
         topic = st.text_input("Topic / Title")
         ctype = st.selectbox("Format", ["Blog Post", "LinkedIn Post", "Twitter Thread"])
-        if st.button("Generate Content", kind="primary"):
+        if st.button("Generate Content", type="primary"):
             if topic:
                 with st.spinner("Creating..."):
                     res = run_content_generator(topic, ctype.lower(), selected_model)
