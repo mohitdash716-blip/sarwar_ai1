@@ -239,7 +239,6 @@ div[data-testid="stButton"] button[kind="primary"] {
 
 </style>
 """, unsafe_allow_html=True)
-""", unsafe_allow_html=True)
 
 # ── Session State ─────────────────────────────────────────────────────────────
 if "active_view" not in st.session_state:
